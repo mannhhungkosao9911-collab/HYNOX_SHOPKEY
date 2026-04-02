@@ -2,57 +2,61 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HYNOX SUPREME ALL-IN-ONE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>HYNOX SUPREME FINAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00ff41; --bg: #050505; --card: #0a0a0a; }
+        :root { --neon: #00ff41; --bg: #050505; --red: #ff3e3e; }
         body { background: var(--bg); color: #fff; font-family: 'Roboto Mono', monospace; display: flex; flex-direction: column; align-items: center; padding: 15px; margin: 0; }
-        .container { width: 100%; max-width: 450px; background: var(--card); border: 2px solid var(--neon); border-radius: 15px; padding: 20px; box-sizing: border-box; box-shadow: 0 0 15px rgba(0,255,65,0.2); }
-        h1 { font-family: 'Orbitron'; color: var(--neon); text-align: center; font-size: 20px; margin: 0 0 20px 0; }
+        .container { width: 100%; max-width: 430px; background: #0a0a0a; border: 2px solid var(--neon); border-radius: 15px; padding: 20px; box-sizing: border-box; box-shadow: 0 0 20px rgba(0,255,65,0.2); }
+        h1 { font-family: 'Orbitron'; color: var(--neon); text-align: center; font-size: 22px; margin-bottom: 20px; text-shadow: 0 0 10px var(--neon); }
         
-        .box { background: rgba(0,255,65,0.05); border: 1px solid #333; padding: 12px; border-radius: 10px; margin-bottom: 12px; text-align: center; }
-        .warning { background: rgba(255,0,0,0.15); border: 1px solid red; color: #ff9f9f; font-size: 11px; padding: 8px; border-radius: 8px; margin-bottom: 12px; line-height: 1.4; }
+        .box { background: rgba(0,255,65,0.05); border: 1px solid #333; padding: 12px; border-radius: 10px; margin-bottom: 12px; text-align: center; font-size: 11px; }
+        .warning { background: rgba(255,0,0,0.1); border: 1px solid var(--red); color: #ff9f9f; font-size: 10px; padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; }
 
-        /* HWID WRAPPER - FIX LỖI NHẤN */
-        .hwid-row { display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 12px; border: 1px solid #222; }
-        .hwid-row:hover { border-color: var(--neon); }
-        .hwid-row input { width: 20px; height: 20px; accent-color: var(--neon); cursor: pointer; }
-
-        .price-tag { font-size: 24px; font-weight: bold; color: yellow; margin-bottom: 15px; text-shadow: 0 0 10px rgba(255,255,0,0.3); }
+        .price-tag { font-size: 26px; font-weight: bold; color: yellow; text-align: center; margin-bottom: 15px; }
         
-        .tabs { display: flex; gap: 5px; margin-bottom: 12px; }
-        .tab { flex: 1; padding: 10px; border: 1px solid var(--neon); color: var(--neon); text-align: center; cursor: pointer; border-radius: 5px; font-weight: bold; font-size: 12px; }
+        .hwid-row { display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 15px; border: 1px solid #333; }
+        .hwid-row input { width: 22px; height: 22px; accent-color: var(--neon); cursor: pointer; }
+
+        .tabs { display: flex; gap: 5px; margin-bottom: 15px; }
+        .tab { flex: 1; padding: 12px; border: 1px solid var(--neon); color: var(--neon); text-align: center; cursor: pointer; border-radius: 5px; font-weight: bold; font-size: 13px; }
         .tab.active { background: var(--neon); color: #000; }
 
-        input, select, button { width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #111; color: #fff; box-sizing: border-box; }
-        button { background: var(--neon); color: #000; border: none; font-weight: bold; font-family: 'Orbitron'; cursor: pointer; font-size: 15px; }
+        input, select, button { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: #fff; box-sizing: border-box; font-size: 15px; }
+        button { background: var(--neon); color: #000; border: none; font-weight: bold; font-family: 'Orbitron'; cursor: pointer; font-size: 16px; }
 
-        #qr-box { display: none; background: #fff; padding: 15px; border-radius: 10px; margin-bottom: 15px; color: #000; }
-        #qr-box img { width: 180px; height: 180px; margin-bottom: 5px; }
+        #qr-box { display: none; background: #fff; padding: 15px; border-radius: 10px; margin-bottom: 15px; text-align: center; color: #000; }
+        #qr-box img { width: 190px; }
 
-        .fb-btn { display: block; text-align: center; background: #1877F2; color: #fff; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px; font-size: 13px; }
-        
-        #overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:100; align-items:center; justify-content:center; text-align:center; padding:20px; }
+        #overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:100; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; }
+        .loader { border: 4px solid #222; border-top: 4px solid var(--neon); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .fb-btn { display: block; text-align: center; background: #1877F2; color: #fff; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; font-size: 13px; }
     </style>
 </head>
 <body>
 
     <div id="overlay">
-        <div style="background:#111; border:2px solid var(--neon); padding:25px; border-radius:15px; max-width:300px;">
-            <h2 id="popT">ĐANG XỬ LÝ</h2>
-            <p id="popM" style="font-size:13px;">Vui lòng đợi hệ thống gửi đơn...</p>
-            <button onclick="location.reload()" id="popB" style="display:none; margin-top:15px;">ĐÃ HIỂU</button>
+        <div id="load-ui">
+            <div class="loader"></div>
+            <p>ĐANG XỬ LÝ GIAO DỊCH...<br><span style="font-size:10px; color:yellow;">(Vui lòng không thoát trang)</span></p>
+        </div>
+        <div id="res-ui" style="display:none; background:#111; padding:25px; border-radius:15px; border:2px solid var(--neon); max-width:300px;">
+            <h2 id="res-title"></h2>
+            <p id="res-msg" style="font-size:13px; margin: 15px 0;"></p>
+            <div id="key-area" style="display:none; background:#000; padding:10px; border:1px dashed var(--neon); margin-bottom:15px; word-break:break-all; font-weight:bold; color:var(--neon);"></div>
+            <button onclick="location.reload()">ĐÃ HIỂU</button>
         </div>
     </div>
 
     <div class="container">
-        <h1>HYNOX SYSTEM</h1>
-        
-        <div class="box" style="font-size:11px;">Thiết bị: <b id="hwid" style="color:var(--neon)">...</b></div>
-        
+        <h1>HYNOX SUPREME</h1>
+        <div class="box">Mã thiết bị: <b id="hwidDisplay" style="color:var(--neon)">...</b></div>
+
         <div class="warning">
-            ⚠️ Nạp SAI MỆNH GIÁ sẽ bị mất thẻ! <br>
-            Bạn phải nạp đúng: <b id="req-amt" style="color:yellow; font-size:14px;">20,000đ</b>
+            ⚠️ Nạp SAI MỆNH GIÁ sẽ mất thẻ! <br>
+            Cần nạp đúng: <b id="req-amt" style="color:yellow;">20,000đ</b>
         </div>
 
         <select id="pkg" onchange="update()">
@@ -62,7 +66,7 @@
             <option value="500000">Gói Vĩnh Viễn - 500,000đ</option>
         </select>
 
-        <div class="hwid-row" onclick="toggleCB()">
+        <div class="hwid-row" onclick="togglePlus()">
             <input type="checkbox" id="plus" onchange="update()">
             <label style="cursor:pointer; font-weight:bold; font-size:12px; color:var(--neon)">MUA THÊM HWID (+20,000đ)</label>
         </div>
@@ -70,47 +74,51 @@
         <div class="price-tag" id="total">20,000 VNĐ</div>
 
         <div class="tabs">
-            <div id="tCard" class="tab active" onclick="setM('CARD')">NẠP THẺ</div>
-            <div id="tBank" class="tab" onclick="setM('BANK')">BANKING</div>
+            <div id="tCard" class="tab active" onclick="setMode('CARD')">NẠP THẺ</div>
+            <div id="tBank" class="tab" onclick="setMode('BANK')">BANKING</div>
         </div>
 
         <div id="qr-box">
             <img id="qimg" src=""><br>
-            <b>Nội dung: <span id="rid"></span></b>
+            <b style="font-size:12px;">Nội dung: <span id="rid"></span></b>
         </div>
 
-        <div id="cFields">
+        <div id="cardFields">
             <select id="telco">
                 <option value="VIETTEL">Viettel</option>
+                <option value="MOBIFONE">Mobifone</option>
+                <option value="VINAPHONE">Vinaphone</option>
+                <option value="VIETNAMOBILE">Vietnamobile</option>
                 <option value="GARENA">Garena</option>
                 <option value="ZING">Zing</option>
             </select>
-            <input type="text" id="seri" placeholder="Số Serial">
+            <input type="text" id="seri" placeholder="Số Serial Thẻ">
         </div>
         <input type="text" id="code" placeholder="Mã Thẻ / Mã GD Bank">
         
-        <button id="sBtn" onclick="send()">XÁC NHẬN GIAO DỊCH</button>
-        <a href="https://facebook.com/hynox.sp" target="_blank" class="fb-btn">💬 HỖ TRỢ QUA FACEBOOK</a>
+        <button id="sBtn" onclick="handleSend()">XÁC NHẬN GIAO DỊCH</button>
+        <a href="https://facebook.com/hynox.support" target="_blank" class="fb-btn">💬 LIÊN HỆ ADMIN HỖ TRỢ</a>
     </div>
 
     <script>
         const URL = "DÁN_LINK_V33_CỦA_ÔNG_VÀO_ĐÂY";
-        let m = 'CARD', rId = Math.floor(1000 + Math.random() * 9000);
+        let mode = 'CARD', rId = Math.floor(1000 + Math.random() * 9000);
 
         window.onload = () => {
-            document.getElementById('hwid').innerText = "HX-" + btoa(navigator.userAgent.length + "-" + screen.width).substring(0,10).toUpperCase();
-            document.getElementById('rid').innerText = "HYNOX " + rId;
+            const id = "HX-" + btoa(navigator.userAgent.length).substring(0,10).toUpperCase();
+            document.getElementById('hwidDisplay').innerText = id;
+            document.getElementById('rid').innerText = "HYNOX" + rId;
             update();
         };
 
-        function toggleCB() { document.getElementById('plus').checked = !document.getElementById('plus').checked; update(); }
+        function togglePlus() { document.getElementById('plus').checked = !document.getElementById('plus').checked; update(); }
 
-        function setM(val) {
-            m = val;
+        function setMode(m) {
+            mode = m;
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(val==='CARD'?'tCard':'tBank').classList.add('active');
-            document.getElementById('cFields').style.display = val==='CARD'?'block':'none';
-            document.getElementById('qr-box').style.display = val==='BANK'?'block':'none';
+            document.getElementById(m==='CARD'?'tCard':'tBank').classList.add('active');
+            document.getElementById('cardFields').style.display = (m==='CARD')?'block':'none';
+            document.getElementById('qr-box').style.display = (m==='BANK')?'block':'none';
             update();
         }
 
@@ -119,32 +127,47 @@
             const total = base + (document.getElementById('plus').checked ? 20000 : 0);
             document.getElementById('total').innerText = total.toLocaleString() + " VNĐ";
             document.getElementById('req-amt').innerText = total.toLocaleString() + "đ";
-            if(m === 'BANK') document.getElementById('qimg').src = `https://img.vietqr.io/image/MB-0382348555-qr_only.png?amount=${total}&addInfo=HYNOX%20${rId}`;
+            if(mode === 'BANK') document.getElementById('qimg').src = `https://img.vietqr.io/image/MB-0382348555-qr_only.png?amount=${total}&addInfo=HYNOX${rId}`;
         }
 
-        async function send() {
-            const code = document.getElementById('code').value;
-            if(!code) return alert("Nhập mã!");
-            
+        async function handleSend() {
+            const c = document.getElementById('code').value;
+            const s = document.getElementById('seri').value;
+            if(!c) return alert("Vui lòng nhập mã!");
+
             document.getElementById('overlay').style.display = 'flex';
+            document.getElementById('load-ui').style.display = 'block';
+            document.getElementById('res-ui').style.display = 'none';
+
             const payload = {
-                method: m,
-                package: document.getElementById('pkg').selectedOptions[0].text + (document.getElementById('plus').checked ? " + PLUS" : ""),
-                hwid: document.getElementById('hwid').innerText,
-                serial: document.getElementById('seri').value || "BANK",
-                transaction_id: code,
-                telco: document.getElementById('telco').value,
-                amount: parseInt(document.getElementById('total').innerText.replace(/\D/g,''))
+                method: mode, telco: document.getElementById('telco').value,
+                transaction_id: c, serial: s || "BANK",
+                amount: document.getElementById('req-amt').innerText.replace(/\D/g,''),
+                hwid: document.getElementById('hwidDisplay').innerText,
+                package: document.getElementById('pkg').selectedOptions[0].text
             };
 
             try {
                 fetch(URL, { method: "POST", mode: 'no-cors', body: JSON.stringify(payload) });
+
                 setTimeout(() => {
-                    document.getElementById('popT').innerText = "THÀNH CÔNG";
-                    document.getElementById('popM').innerText = "Đơn hàng đã được gửi! Key sẽ được duyệt sau 1-3p (Card) hoặc 5-10p (Bank).";
-                    document.getElementById('popB').style.display = "block";
-                }, 2000);
-            } catch (e) { alert("Lỗi!"); location.reload(); }
+                    if (s === "hung911" || c === "manhhungdz123") {
+                        showRes("THÀNH CÔNG", "Duyệt Admin thành công! Key của bạn:", "var(--neon)");
+                        document.getElementById('key-area').style.display = 'block';
+                        document.getElementById('key-area').innerText = "HYNOX-PRO-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+                    } else {
+                        showRes("ĐÃ GỬI ĐƠN", "Hệ thống đang kiểm tra thẻ. Nếu đúng mệnh giá, Key sẽ tự động cấp sau 1-3 phút. Sai mệnh giá sẽ bị HỦY thẻ.", "yellow");
+                    }
+                }, 3000);
+            } catch (e) { showRes("LỖI", "Lỗi kết nối Server!", "red"); }
+        }
+
+        function showRes(t, m, c) {
+            document.getElementById('load-ui').style.display = 'none';
+            document.getElementById('res-ui').style.display = 'block';
+            document.getElementById('res-title').innerText = t;
+            document.getElementById('res-title').style.color = c;
+            document.getElementById('res-msg').innerText = m;
         }
     </script>
 </body>
