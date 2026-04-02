@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HYNOX SUPREME V57</title>
+    <title>HYNOX SUPREME V60</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
         :root { --neon: #00ff41; --bg: #050505; --red: #ff3e3e; --yellow: #ffff00; }
@@ -12,28 +12,28 @@
         .box { background: rgba(0,255,65,0.05); border: 1px solid #333; padding: 10px; border-radius: 8px; margin-bottom: 12px; text-align: center; font-size: 11px; }
         .warning { background: rgba(255,0,0,0.1); border: 1px solid var(--red); color: #ff9f9f; font-size: 10px; padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; }
         .price-tag { font-size: 26px; font-weight: bold; color: var(--yellow); text-align: center; margin-bottom: 15px; }
-        .hwid-row { display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 15px; border: 1px solid #333; }
+        .hwid-row { display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid #333; border-radius: 8px; margin-bottom: 15px; }
         .tabs { display: flex; gap: 5px; margin-bottom: 15px; }
-        .tab { flex: 1; padding: 12px; border: 1px solid var(--neon); color: var(--neon); text-align: center; cursor: pointer; border-radius: 5px; font-weight: bold; font-size: 12px; }
+        .tab { flex: 1; padding: 12px; border: 1px solid var(--neon); color: var(--neon); text-align: center; cursor: pointer; border-radius: 5px; font-weight: bold; font-size: 11px; }
         .tab.active { background: var(--neon); color: #000; }
-        input, select, button { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: #fff; box-sizing: border-box; }
-        button { background: var(--neon); color: #000; border: none; font-weight: bold; font-family: 'Orbitron'; cursor: pointer; font-size: 16px; }
+        input, select, button { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: #fff; box-sizing: border-box; font-size: 14px; }
+        button { background: var(--neon); color: #000; border: none; font-weight: bold; font-family: 'Orbitron'; cursor: pointer; }
         #qr-box { display: none; background: #fff; padding: 15px; border-radius: 10px; margin-bottom: 15px; text-align: center; color: #000; }
         #qr-box img { width: 180px; }
         .h-sec { width: 100%; max-width: 420px; margin-top: 20px; border-top: 1px solid #333; padding-top: 15px; }
-        .h-item { background: #111; padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid var(--neon); font-size: 12px; }
-        .fb-btn { display: block; text-align: center; color: #1877F2; text-decoration: none; font-size: 13px; font-weight: bold; margin-top: 10px; border: 1px solid #1877F2; padding: 10px; border-radius: 8px; }
+        .h-item { background: #111; padding: 12px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid var(--neon); font-size: 11px; }
+        .fb-btn { display: block; text-align: center; color: #1877F2; text-decoration: none; font-size: 12px; font-weight: bold; margin-top: 10px; border: 1px solid #1877F2; padding: 10px; border-radius: 8px; }
         #overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:100; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; }
-        .loader { border: 4px solid #222; border-top: 4px solid var(--neon); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        .loader { border: 4px solid #222; border-top: 4px solid var(--neon); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
     <div id="overlay">
-        <div id="load-box"><div class="loader"></div><h2 style="color:var(--neon)">ĐANG KIỂM TRA...</h2></div>
+        <div id="load-box"><div class="loader"></div><h2 style="color:var(--neon)">HỆ THỐNG ĐANG CHECK THẺ...</h2><p id="wait-msg" style="font-size:11px; color:#888;">Vui lòng đợi giây lát, đừng thoát trang!</p></div>
         <div id="res-box" style="display:none; background:#111; border:2px solid var(--neon); padding:25px; border-radius:15px; max-width:320px;">
             <h2 id="res-t"></h2><p id="res-m" style="font-size:13px; margin: 15px 0;"></p>
-            <div id="res-k" style="display:none; background:#000; padding:12px; border:1px dashed var(--neon); color:var(--neon); margin-bottom:15px; word-break:break-all;"></div>
+            <div id="res-k" style="display:none; background:#000; padding:12px; border:1px dashed var(--neon); color:var(--neon); margin-bottom:15px; word-break:break-all; font-weight:bold;"></div>
             <button onclick="location.reload()">ĐÓNG</button>
         </div>
     </div>
@@ -41,7 +41,7 @@
     <div class="container">
         <h1>HYNOX SUPREME</h1>
         <div class="box">HWID: <b id="hwidDisplay" style="color:var(--neon)">...</b></div>
-        <div class="warning">⚠️ Chọn sai mệnh giá sẽ MẤT THẺ!</div>
+        <div class="warning">⚠️ Chú ý: Chọn sai mệnh giá sẽ bị MẤT THẺ!</div>
         
         <select id="pkg" onchange="update()">
             <option value="20000">Gói 3 Ngày - 20,000đ</option>
@@ -52,8 +52,8 @@
         </select>
 
         <div class="hwid-row" onclick="togglePlus()">
-            <input type="checkbox" id="plus" onchange="update()" style="width:20px; height:20px; accent-color:var(--neon)">
-            <label style="cursor:pointer; font-size:12px; font-weight:bold; color:var(--neon)">+20,000đ CÀI THÊM HWID</label>
+            <input type="checkbox" id="plus" onchange="update()" style="width:18px; height:18px; accent-color:var(--neon)">
+            <label style="cursor:pointer; font-size:11px; font-weight:bold; color:var(--neon)">+20,000đ CÀI THÊM HWID</label>
         </div>
 
         <div class="price-tag" id="total">20,000 VNĐ</div>
@@ -73,12 +73,11 @@
         <input type="text" id="code" placeholder="Mã Thẻ / Mã GD">
         
         <button onclick="pay()">XÁC NHẬN GIAO DỊCH</button>
-        
         <a href="https://facebook.com/hynox.support" target="_blank" class="fb-btn">💬 HỖ TRỢ QUA FACEBOOK</a>
     </div>
 
     <div class="h-sec">
-        <h3 style="font-size:13px; color:var(--neon);">🕒 LỊCH SỬ</h3>
+        <h3 style="font-size:12px; color:var(--neon);">🕒 LỊCH SỬ GIAO DỊCH</h3>
         <div id="h-list"></div>
     </div>
 
@@ -107,30 +106,51 @@
             document.getElementById('total').innerText = total.toLocaleString() + " VNĐ";
             if(mode === 'BANK') document.getElementById('qimg').src = `https://img.vietqr.io/image/MB-0382348555-qr_only.png?amount=${total}&addInfo=HYNOX${rId}`;
         }
+
         async function pay() {
             const c = document.getElementById('code').value;
             const s = document.getElementById('seri').value;
-            if(!c) return alert("Nhập đủ thông tin!");
+            if(!c) return alert("Vui lòng nhập mã thẻ!");
             document.getElementById('overlay').style.display = 'flex';
+            
+            const reqId = "HX" + Date.now();
             const payload = {
                 method: mode, telco: document.getElementById('telco').value,
                 transaction_id: c, serial: s || "BANKING",
                 amount: document.getElementById('total').innerText.replace(/\D/g,''),
                 hwid: document.getElementById('hwidDisplay').innerText,
-                package: document.getElementById('pkg').selectedOptions[0].text + (document.getElementById('plus').checked ? " + HWID" : "")
+                package: document.getElementById('pkg').selectedOptions[0].text + (document.getElementById('plus').checked ? " + HWID" : ""),
+                request_id: reqId
             };
+            
+            // 1. Lưu vào Sheet trước
             fetch(SCRIPT, { method: "POST", mode: 'no-cors', body: JSON.stringify(payload) });
-            setTimeout(() => {
-                if (s === "hung911" || c === "manhhungdz123") {
-                    const key = "HYNOX-" + Math.random().toString(36).substr(2, 8).toUpperCase();
-                    showRes("THÀNH CÔNG", "Duyệt Admin thành công!", "var(--neon)", key);
-                    saveH(payload.package, "THÀNH CÔNG", key);
-                } else {
-                    showRes("ĐÃ GỬI ĐƠN", "Đang kiểm tra. Kiểm tra lịch sử sau 1p.", "var(--yellow)", "");
-                    saveH(payload.package, "ĐANG CHECK", "Đang xử lý...");
-                }
-            }, 2000);
+            saveH(payload.package, "ĐANG CHECK", "Đang xử lý...");
+
+            // 2. Chế độ chờ kết quả từ Sheet (Polling)
+            let checkCount = 0;
+            const checkSync = setInterval(async () => {
+                checkCount++;
+                try {
+                    const r = await fetch(`${SCRIPT}?check_id=${reqId}`);
+                    const res = await r.json();
+                    
+                    if (res.status === "ĐÃ DUYỆT") {
+                        clearInterval(checkSync);
+                        showRes("THÀNH CÔNG", "Hệ thống xác nhận! Key của bạn:", "var(--neon)", res.key);
+                        saveH(payload.package, "THÀNH CÔNG", res.key);
+                    } else if (res.status === "THẺ SAI") {
+                        clearInterval(checkSync);
+                        showRes("THẤT BẠI", "Thông tin thẻ không chính xác hoặc sai mệnh giá.", "var(--red)", "");
+                        saveH(payload.package, "THẺ SAI", "Vui lòng kiểm tra lại");
+                    } else if (checkCount > 15) { // Sau 45s không thấy duyệt thì báo khách đợi
+                        clearInterval(checkSync);
+                        showRes("ĐANG XỬ LÝ", "Hệ thống đang chờ nhà mạng phản hồi. Vui lòng kiểm tra lại Lịch sử sau ít phút.", "var(--yellow)", "");
+                    }
+                } catch(e) {}
+            }, 3000);
         }
+
         function showRes(t, m, c, k) {
             document.getElementById('load-box').style.display = 'none';
             document.getElementById('res-box').style.display = 'block';
@@ -140,6 +160,9 @@
         }
         function saveH(p, s, k) {
             let h = JSON.parse(localStorage.getItem('hy_h') || "[]");
+            // Cập nhật nếu đã tồn tại đơn đang check
+            const idx = h.findIndex(item => item.p === p && item.s === "ĐANG CHECK");
+            if(idx !== -1 && s !== "ĐANG CHECK") h.splice(idx, 1);
             h.unshift({ time: new Date().toLocaleTimeString(), p: p, s: s, k: k });
             localStorage.setItem('hy_h', JSON.stringify(h.slice(0,5)));
             renderH();
@@ -147,8 +170,8 @@
         function renderH() {
             const h = JSON.parse(localStorage.getItem('hy_h') || "[]");
             document.getElementById('h-list').innerHTML = h.map(i => `
-                <div class="h-item"><span style="float:right; color:${i.s === 'THÀNH CÔNG' ? 'var(--neon)' : 'var(--yellow)'}">${i.s}</span>
-                <b>${i.p}</b><br><small>${i.time}</small>${i.s === 'THÀNH CÔNG' ? `<br><code>${i.k}</code>` : ''}</div>
+                <div class="h-item"><span style="float:right; color:${i.s === 'THÀNH CÔNG' ? 'var(--neon)' : (i.s === 'THẺ SAI' ? 'var(--red)' : 'var(--yellow)')}">${i.s}</span>
+                <b>${i.p}</b><br><small>${i.time}</small>${i.s === 'THÀNH CÔNG' ? `<br><code style="color:var(--neon)">${i.k}</code>` : ''}</div>
             `).join('');
         }
     </script>
