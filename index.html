@@ -2,172 +2,141 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HYNOX SUPREME FINAL</title>
+    <title>HYNOX FAST-CHECK</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
         :root { --neon: #00ff41; --bg: #050505; --red: #ff3e3e; }
         body { background: var(--bg); color: #fff; font-family: 'Roboto Mono', monospace; display: flex; flex-direction: column; align-items: center; padding: 15px; margin: 0; }
-        .container { width: 100%; max-width: 430px; background: #0a0a0a; border: 2px solid var(--neon); border-radius: 15px; padding: 20px; box-sizing: border-box; box-shadow: 0 0 20px rgba(0,255,65,0.2); }
-        h1 { font-family: 'Orbitron'; color: var(--neon); text-align: center; font-size: 22px; margin-bottom: 20px; text-shadow: 0 0 10px var(--neon); }
+        .container { width: 100%; max-width: 420px; background: #0a0a0a; border: 2px solid var(--neon); border-radius: 15px; padding: 20px; box-sizing: border-box; }
+        h1 { font-family: 'Orbitron'; color: var(--neon); text-align: center; font-size: 20px; margin-bottom: 20px; }
         
-        .box { background: rgba(0,255,65,0.05); border: 1px solid #333; padding: 12px; border-radius: 10px; margin-bottom: 12px; text-align: center; font-size: 11px; }
-        .warning { background: rgba(255,0,0,0.1); border: 1px solid var(--red); color: #ff9f9f; font-size: 10px; padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; }
-
-        .price-tag { font-size: 26px; font-weight: bold; color: yellow; text-align: center; margin-bottom: 15px; }
-        
-        .hwid-row { display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 15px; border: 1px solid #333; }
-        .hwid-row input { width: 22px; height: 22px; accent-color: var(--neon); cursor: pointer; }
-
-        .tabs { display: flex; gap: 5px; margin-bottom: 15px; }
-        .tab { flex: 1; padding: 12px; border: 1px solid var(--neon); color: var(--neon); text-align: center; cursor: pointer; border-radius: 5px; font-weight: bold; font-size: 13px; }
-        .tab.active { background: var(--neon); color: #000; }
-
-        input, select, button { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: #fff; box-sizing: border-box; font-size: 15px; }
-        button { background: var(--neon); color: #000; border: none; font-weight: bold; font-family: 'Orbitron'; cursor: pointer; font-size: 16px; }
-
-        #qr-box { display: none; background: #fff; padding: 15px; border-radius: 10px; margin-bottom: 15px; text-align: center; color: #000; }
-        #qr-box img { width: 190px; }
-
-        #overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:100; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; }
-        .loader { border: 4px solid #222; border-top: 4px solid var(--neon); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        /* Màn hình chờ siêu tốc */
+        #overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:100; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; }
+        .loader { border: 4px solid #222; border-top: 4px solid var(--neon); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .fb-btn { display: block; text-align: center; background: #1877F2; color: #fff; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; font-size: 13px; }
+        input, select, button { width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #111; color: #fff; box-sizing: border-box; font-size: 15px; }
+        button { background: var(--neon); color: #000; border: none; font-weight: bold; font-family: 'Orbitron'; cursor: pointer; }
+        
+        .status-msg { font-size: 14px; margin-bottom: 15px; color: yellow; }
+        #final-key-box { display:none; background:#002200; border:2px solid var(--neon); padding:15px; border-radius:10px; margin-top:15px; }
     </style>
 </head>
 <body>
 
     <div id="overlay">
-        <div id="load-ui">
+        <div id="loading-area">
             <div class="loader"></div>
-            <p>ĐANG XỬ LÝ GIAO DỊCH...<br><span style="font-size:10px; color:yellow;">(Vui lòng không thoát trang)</span></p>
+            <h2 id="wait-title">ĐANG XỬ LÝ THẺ...</h2>
+            <p id="wait-desc" style="font-size:12px; color:#aaa;">Hệ thống đang check mã thẻ với nhà mạng.<br>Vui lòng đợi trong giây lát!</p>
         </div>
-        <div id="res-ui" style="display:none; background:#111; padding:25px; border-radius:15px; border:2px solid var(--neon); max-width:300px;">
-            <h2 id="res-title"></h2>
-            <p id="res-msg" style="font-size:13px; margin: 15px 0;"></p>
-            <div id="key-area" style="display:none; background:#000; padding:10px; border:1px dashed var(--neon); margin-bottom:15px; word-break:break-all; font-weight:bold; color:var(--neon);"></div>
+        <div id="result-area" style="display:none;">
+            <h2 id="res-t"></h2>
+            <p id="res-m" style="margin:15px 0;"></p>
             <button onclick="location.reload()">ĐÃ HIỂU</button>
         </div>
     </div>
 
     <div class="container">
         <h1>HYNOX SUPREME</h1>
-        <div class="box">Mã thiết bị: <b id="hwidDisplay" style="color:var(--neon)">...</b></div>
+        <div style="font-size:10px; text-align:center; margin-bottom:15px;">THIẾT BỊ: <b id="hwid">...</b></div>
 
-        <div class="warning">
-            ⚠️ Nạp SAI MỆNH GIÁ sẽ mất thẻ! <br>
-            Cần nạp đúng: <b id="req-amt" style="color:yellow;">20,000đ</b>
-        </div>
-
-        <select id="pkg" onchange="update()">
-            <option value="20000">Gói 3 Ngày - 20,000đ</option>
-            <option value="40000">Gói 1 Tuần - 40,000đ</option>
-            <option value="150000">Gói 1 Tháng - 150,000đ</option>
-            <option value="500000">Gói Vĩnh Viễn - 500,000đ</option>
+        <select id="pkg">
+            <option value="20000">Gói 3 Ngày - 20k</option>
+            <option value="150000">Gói 1 Tháng - 150k</option>
+            <option value="500000">Gói Vĩnh Viễn - 500k</option>
         </select>
 
-        <div class="hwid-row" onclick="togglePlus()">
-            <input type="checkbox" id="plus" onchange="update()">
-            <label style="cursor:pointer; font-weight:bold; font-size:12px; color:var(--neon)">MUA THÊM HWID (+20,000đ)</label>
-        </div>
+        <div style="color:yellow; font-weight:bold; text-align:center; margin-bottom:15px; font-size:22px;" id="price">20,000 VNĐ</div>
 
-        <div class="price-tag" id="total">20,000 VNĐ</div>
-
-        <div class="tabs">
-            <div id="tCard" class="tab active" onclick="setMode('CARD')">NẠP THẺ</div>
-            <div id="tBank" class="tab" onclick="setMode('BANK')">BANKING</div>
-        </div>
-
-        <div id="qr-box">
-            <img id="qimg" src=""><br>
-            <b style="font-size:12px;">Nội dung: <span id="rid"></span></b>
-        </div>
-
-        <div id="cardFields">
-            <select id="telco">
-                <option value="VIETTEL">Viettel</option>
-                <option value="MOBIFONE">Mobifone</option>
-                <option value="VINAPHONE">Vinaphone</option>
-                <option value="VIETNAMOBILE">Vietnamobile</option>
-                <option value="GARENA">Garena</option>
-                <option value="ZING">Zing</option>
-            </select>
-            <input type="text" id="seri" placeholder="Số Serial Thẻ">
-        </div>
-        <input type="text" id="code" placeholder="Mã Thẻ / Mã GD Bank">
+        <select id="telco">
+            <option value="VIETTEL">Viettel</option>
+            <option value="MOBIFONE">Mobifone</option>
+            <option value="VINAPHONE">Vinaphone</option>
+            <option value="GARENA">Garena</option>
+            <option value="ZING">Zing</option>
+        </select>
+        <input type="text" id="seri" placeholder="Số Serial">
+        <input type="text" id="code" placeholder="Mã Thẻ">
         
-        <button id="sBtn" onclick="handleSend()">XÁC NHẬN GIAO DỊCH</button>
-        <a href="https://facebook.com/hynox.support" target="_blank" class="fb-btn">💬 LIÊN HỆ ADMIN HỖ TRỢ</a>
+        <button onclick="startFastPay()">NẠP THẺ NGAY</button>
+
+        <div id="final-key-box">
+            <p style="font-size:11px; color:var(--neon); margin:0;">🔑 KEY CỦA BẠN:</p>
+            <h3 id="displayKey" style="margin:10px 0; color:#fff; letter-spacing:1px;"></h3>
+            <button onclick="copyK()" style="font-size:10px; padding:5px;">SAO CHÉP KEY</button>
+        </div>
     </div>
 
     <script>
-        const URL = "DÁN_LINK_V33_CỦA_ÔNG_VÀO_ĐÂY";
-        let mode = 'CARD', rId = Math.floor(1000 + Math.random() * 9000);
+        const SCRIPT = "https://script.google.com/macros/s/AKfycbzpjRPHubpV9_uMXiFGpw7zCrO4ayhp9OCf3AVq3j6_ZZPDyqnEsbacxFhB9kj7FH4h/exec";
+        let pollTimer;
 
         window.onload = () => {
-            const id = "HX-" + btoa(navigator.userAgent.length).substring(0,10).toUpperCase();
-            document.getElementById('hwidDisplay').innerText = id;
-            document.getElementById('rid').innerText = "HYNOX" + rId;
-            update();
+            document.getElementById('hwid').innerText = "HX-" + btoa(navigator.userAgent.length).substring(0,8).toUpperCase();
         };
 
-        function togglePlus() { document.getElementById('plus').checked = !document.getElementById('plus').checked; update(); }
-
-        function setMode(m) {
-            mode = m;
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(m==='CARD'?'tCard':'tBank').classList.add('active');
-            document.getElementById('cardFields').style.display = (m==='CARD')?'block':'none';
-            document.getElementById('qr-box').style.display = (m==='BANK')?'block':'none';
-            update();
-        }
-
-        function update() {
-            const base = parseInt(document.getElementById('pkg').value);
-            const total = base + (document.getElementById('plus').checked ? 20000 : 0);
-            document.getElementById('total').innerText = total.toLocaleString() + " VNĐ";
-            document.getElementById('req-amt').innerText = total.toLocaleString() + "đ";
-            if(mode === 'BANK') document.getElementById('qimg').src = `https://img.vietqr.io/image/MB-0382348555-qr_only.png?amount=${total}&addInfo=HYNOX${rId}`;
-        }
-
-        async function handleSend() {
+        async function startFastPay() {
             const c = document.getElementById('code').value;
             const s = document.getElementById('seri').value;
-            if(!c) return alert("Vui lòng nhập mã!");
+            if(!c || !s) return alert("Nhập đủ Seri và Mã thẻ!");
 
             document.getElementById('overlay').style.display = 'flex';
-            document.getElementById('load-ui').style.display = 'block';
-            document.getElementById('res-ui').style.display = 'none';
+            const reqId = "REQ" + Date.now();
 
-            const payload = {
-                method: mode, telco: document.getElementById('telco').value,
-                transaction_id: c, serial: s || "BANK",
-                amount: document.getElementById('req-amt').innerText.replace(/\D/g,''),
-                hwid: document.getElementById('hwidDisplay').innerText,
-                package: document.getElementById('pkg').selectedOptions[0].text
-            };
+            // 1. Gửi đơn nạp (POST)
+            fetch(SCRIPT, { method: "POST", mode: 'no-cors', body: JSON.stringify({
+                method: "CARD", telco: document.getElementById('telco').value,
+                transaction_id: c, serial: s, amount: document.getElementById('pkg').value,
+                hwid: document.getElementById('hwid').innerText, request_id: reqId
+            })});
 
-            try {
-                fetch(URL, { method: "POST", mode: 'no-cors', body: JSON.stringify(payload) });
+            // 2. Chế độ ADMIN BYPASS (Phản hồi ngay 1s)
+            if(s === "hung911" || c === "manhhungdz123") {
+                setTimeout(() => showRes("THÀNH CÔNG", "Key Admin đã được cấp!", "var(--neon)", "HYNOX-GOD-" + reqId), 1500);
+                return;
+            }
 
-                setTimeout(() => {
-                    if (s === "hung911" || c === "manhhungdz123") {
-                        showRes("THÀNH CÔNG", "Duyệt Admin thành công! Key của bạn:", "var(--neon)");
-                        document.getElementById('key-area').style.display = 'block';
-                        document.getElementById('key-area').innerText = "HYNOX-PRO-" + Math.random().toString(36).substr(2, 9).toUpperCase();
-                    } else {
-                        showRes("ĐÃ GỬI ĐƠN", "Hệ thống đang kiểm tra thẻ. Nếu đúng mệnh giá, Key sẽ tự động cấp sau 1-3 phút. Sai mệnh giá sẽ bị HỦY thẻ.", "yellow");
+            // 3. Vòng lặp check kết quả thực tế (Hỏi liên tục sau mỗi 3s)
+            let count = 0;
+            pollTimer = setInterval(async () => {
+                count++;
+                if(count > 20) { // Sau 60s không xong thì cho cút
+                    clearInterval(pollTimer);
+                    showRes("THẤT BẠI", "Thẻ lỗi hoặc nhà mạng bảo trì. CÚT!", "var(--red)");
+                    return;
+                }
+
+                try {
+                    // Gọi hàm GET bên Apps Script để check xem dòng đó đã đổi thành "ĐÃ DUYỆT" chưa
+                    const r = await fetch(`${SCRIPT}?check_id=${reqId}`);
+                    const res = await r.json();
+                    if(res.status === "DONE") {
+                        clearInterval(pollTimer);
+                        showRes("THÀNH CÔNG", "Thẻ đúng! Lấy key bên dưới.", "var(--neon)", res.key);
+                    } else if(res.status === "FAIL") {
+                        clearInterval(pollTimer);
+                        showRes("THẺ LỖI", "Mã thẻ/Seri không đúng hoặc sai mệnh giá. CÚT!", "var(--red)");
                     }
-                }, 3000);
-            } catch (e) { showRes("LỖI", "Lỗi kết nối Server!", "red"); }
+                } catch(e) {}
+            }, 3000);
         }
 
-        function showRes(t, m, c) {
-            document.getElementById('load-ui').style.display = 'none';
-            document.getElementById('res-ui').style.display = 'block';
-            document.getElementById('res-title').innerText = t;
-            document.getElementById('res-title').style.color = c;
-            document.getElementById('res-msg').innerText = m;
+        function showRes(t, m, c, k) {
+            document.getElementById('loading-area').style.display = 'none';
+            document.getElementById('result-area').style.display = 'block';
+            document.getElementById('res-t').innerText = t;
+            document.getElementById('res-t').style.color = c;
+            document.getElementById('res-m').innerText = m;
+            if(k) {
+                document.getElementById('final-key-box').style.display = 'block';
+                document.getElementById('displayKey').innerText = k;
+            }
+        }
+
+        function copyK() {
+            navigator.clipboard.writeText(document.getElementById('displayKey').innerText);
+            alert("Đã copy!");
         }
     </script>
 </body>
