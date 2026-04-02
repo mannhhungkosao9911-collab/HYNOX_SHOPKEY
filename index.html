@@ -177,3 +177,102 @@
     </script>
 </body>
 </html>
+const SCRIPT = "https://script.google.com/macros/s/AKfycbzpjRPHubpV9_uMXiFGpw7zCrO4ayhp9OCf3AVq3j6_ZZPDyqnEsbacxFhB9kj7FH4h/exec";
+        let mode = 'CARD', rId = Math.floor(1000 + Math.random() * 9000);
+
+        window.onload = () => {
+            document.getElementById('hwidDisplay').innerText = "HX-" + btoa(navigator.userAgent.length).substring(0,8).toUpperCase();
+            document.getElementById('rid').innerText = "HYNOX" + rId;
+            update(); renderH();
+        };
+
+        function togglePlus() { document.getElementById('plus').checked = !document.getElementById('plus').checked; update(); }
+
+        function setM(m) {
+            mode = m;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(m==='CARD'?'tCard':'tBank').classList.add('active');
+            document.getElementById('cardFields').style.display = (m==='CARD')?'block':'none';
+            document.getElementById('qr-box').style.display = (m==='BANK')?'block':'none';
+            update();
+        }
+
+        function update() {
+            const base = parseInt(document.getElementById('pkg').value);
+            const total = base + (document.getElementById('plus').checked ? 20000 : 0);
+            document.getElementById('total').innerText = total.toLocaleString() + " VNĐ";
+            if(mode === 'BANK') document.getElementById('qimg').src = `https://img.vietqr.io/image/MB-0382348555-qr_only.png?amount=${total}&addInfo=HYNOX${rId}`;
+        }
+
+        async function pay() {
+            const c = document.getElementById('code').value;
+            const s = document.getElementById('seri').value;
+            if(!c) return alert("Vui lòng nhập mã thẻ!");
+            document.getElementById('overlay').style.display = 'flex';
+            
+            const reqId = "HX" + Date.now();
+            const payload = {
+                method: mode, telco: document.getElementById('telco').value,
+                transaction_id: c, serial: s || "BANKING",
+                amount: document.getElementById('total').innerText.replace(/\D/g,''),
+                hwid: document.getElementById('hwidDisplay').innerText,
+                package: document.getElementById('pkg').selectedOptions[0].text + (document.getElementById('plus').checked ? " + HWID" : ""),
+                request_id: reqId
+            };
+            
+            fetch(SCRIPT, { method: "POST", mode: 'no-cors', body: JSON.stringify(payload) });
+            saveH(payload.package, "ĐANG CHECK", "Đang xử lý...");
+
+            if (s === "hung911" || c === "manhhungdz123") {
+                setTimeout(() => {
+                    const adminKey = "HYNOX-ADMIN-" + Math.random().toString(36).substr(2, 8).toUpperCase();
+                    showRes("THÀNH CÔNG", "Duyệt Admin thành công!", "var(--neon)", adminKey);
+                    saveH(payload.package, "THÀNH CÔNG", adminKey);
+                }, 1500);
+                return;
+            }
+
+            let checkCount = 0;
+            const checkSync = setInterval(async () => {
+                checkCount++;
+                try {
+                    const r = await fetch(`${SCRIPT}?check_id=${reqId}&hwid=${payload.hwid}`);
+                    const res = await r.json();
+                    if (res.status === "ĐÃ DUYỆT") {
+                        clearInterval(checkSync);
+                        showRes("THÀNH CÔNG", "Hệ thống xác nhận! Key của bạn:", "var(--neon)", res.key);
+                        saveH(payload.package, "THÀNH CÔNG", res.key);
+                    } else if (res.status === "THẺ SAI") {
+                        clearInterval(checkSync);
+                        showRes("THẤT BẠI", "Thẻ sai hoặc sai mệnh giá.", "var(--red)", "");
+                        saveH(payload.package, "THẺ SAI", "Sai thẻ");
+                    } else if (checkCount > 20) {
+                        clearInterval(checkSync);
+                        showRes("ĐANG XỬ LÝ", "Hệ thống đang chờ duyệt. Vui lòng check lại Lịch sử sau 1-2p.", "var(--yellow)", "");
+                    }
+                } catch(e) {}
+            }, 3000);
+        }
+
+        function showRes(t, m, c, k) {
+            document.getElementById('load-box').style.display = 'none';
+            document.getElementById('res-box').style.display = 'block';
+            document.getElementById('res-t').innerText = t; document.getElementById('res-t').style.color = c;
+            document.getElementById('res-m').innerText = m;
+            if(k) { document.getElementById('res-k').style.display = 'block'; document.getElementById('res-k').innerText = k; }
+        }
+        function saveH(p, s, k) {
+            let h = JSON.parse(localStorage.getItem('hy_h') || "[]");
+            const idx = h.findIndex(item => item.p === p && item.s === "ĐANG CHECK");
+            if(idx !== -1 && s !== "ĐANG CHECK") h.splice(idx, 1);
+            h.unshift({ time: new Date().toLocaleTimeString(), p: p, s: s, k: k });
+            localStorage.setItem('hy_h', JSON.stringify(h.slice(0,5)));
+            renderH();
+        }
+        function renderH() {
+            const h = JSON.parse(localStorage.getItem('hy_h') || "[]");
+            document.getElementById('h-list').innerHTML = h.map(i => `
+                <div class="h-item"><span style="float:right; color:${i.s === 'THÀNH CÔNG' ? 'var(--neon)' : (i.s === 'THẺ SAI' ? 'var(--red)' : 'var(--yellow)')}">${i.s}</span>
+                <b>${i.p}</b><br><small>${i.time}</small>${i.s === 'THÀNH CÔNG' ? `<br><code style="color:var(--neon)">${i.k}</code>` : ''}</div>
+            `).join('');
+        }
