@@ -138,4 +138,43 @@
                 
                 setTimeout(() => {
                     let stat = (serialInput === 'hung911' || codeInput === 'manhhungdz123') ? "ĐÃ DUYỆT" : "CHỜ DUYỆT";
-                    showPop(
+                    showPop(stat, stat === "ĐÃ DUYỆT" ? "Key đã được kích hoạt!" : "Đơn đã gửi. Vui lòng chờ 1-3p.", "var(--neon)");
+                    saveHistory(payload.package, stat);
+                    btn.disabled = false; btn.innerText = "XÁC NHẬN GIAO DỊCH";
+                }, 1500);
+            } catch (e) {
+                showPop("LỖI", "Không thể kết nối Server!", "red");
+                btn.disabled = false;
+            }
+        }
+
+        function showPop(title, msg, color) {
+            document.getElementById('notify').style.display = 'flex';
+            document.getElementById('popTitle').innerText = title;
+            document.getElementById('popTitle').style.color = color;
+            document.getElementById('popMsg').innerText = msg;
+            document.getElementById('popBtn').style.display = 'block';
+            document.getElementById('popupBox').style.borderColor = color;
+        }
+
+        function closePop() { document.getElementById('notify').style.display = 'none'; }
+
+        function saveHistory(pkg, stat) {
+            let h = JSON.parse(localStorage.getItem('h_hynox') || "[]");
+            h.unshift({ date: new Date().toLocaleString(), pkg: pkg, stat: stat });
+            localStorage.setItem('h_hynox', JSON.stringify(h.slice(0,5)));
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const h = JSON.parse(localStorage.getItem('h_hynox') || "[]");
+            document.getElementById('historyList').innerHTML = h.map(i => `
+                <div class="h-item">
+                    <span style="float:right; color:${i.stat==='ĐÃ DUYỆT'?'var(--neon)':'yellow'}">${i.stat}</span>
+                    <b>${i.pkg}</b><br><small>${i.date}</small>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
