@@ -2,56 +2,53 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HYNOX SUPREME - FULL OPTION</title>
+    <title>HYNOX SUPREME - AUTO HWID</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono&display=swap" rel="stylesheet">
     <style>
         :root { --neon: #00ff41; --bg: #050505; --card: #0a0a0a; }
         body { background: var(--bg); color: #fff; font-family: 'Roboto Mono', monospace; display: flex; flex-direction: column; align-items: center; padding: 20px; }
         .container { width: 100%; max-width: 480px; background: var(--card); border: 2px solid var(--neon); border-radius: 20px; padding: 25px; box-shadow: 0 0 20px rgba(0,255,65,0.2); box-sizing: border-box; }
-        h1 { font-family: 'Orbitron'; color: var(--neon); text-align: center; margin: 0 0 20px 0; font-size: 22px; text-shadow: 0 0 10px var(--neon); }
+        h1 { font-family: 'Orbitron'; color: var(--neon); text-align: center; margin: 0 0 20px 0; font-size: 20px; }
         
-        /* Checkbox Mua Thêm HWID */
-        .hwid-plus { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid #333; cursor: pointer; }
-        .hwid-plus input { width: 20px; height: 20px; cursor: pointer; margin: 0; }
-        .hwid-plus label { color: #00ff41; font-weight: bold; cursor: pointer; font-size: 14px; }
+        /* Thông báo nhận diện thiết bị */
+        .device-info { background: rgba(0, 255, 65, 0.15); padding: 10px; border-radius: 8px; border: 1px solid var(--neon); margin-bottom: 15px; font-size: 11px; text-align: center; color: #fff; }
+        .device-info b { color: yellow; }
 
         .price-display { background: rgba(0,255,65,0.1); border: 1px dashed var(--neon); padding: 12px; border-radius: 10px; margin-bottom: 15px; text-align: center; }
         .price-display span { color: yellow; font-size: 22px; font-weight: bold; }
 
+        .hwid-plus { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid #333; cursor: pointer; }
+        .hwid-plus input { width: 18px; height: 18px; cursor: pointer; }
+
         .tabs { display: flex; gap: 8px; margin-bottom: 15px; }
-        .tab { flex: 1; padding: 10px; border: 1px solid var(--neon); color: var(--neon); cursor: pointer; border-radius: 8px; text-align: center; font-weight: bold; }
+        .tab { flex: 1; padding: 10px; border: 1px solid var(--neon); color: var(--neon); cursor: pointer; border-radius: 8px; text-align: center; font-weight: bold; font-size: 14px; }
         .tab.active { background: var(--neon); color: #000; box-shadow: 0 0 15px var(--neon); }
 
-        .input-group { margin-bottom: 12px; }
-        label { display: block; font-size: 11px; color: #aaa; margin-bottom: 4px; }
-        select, input { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box; }
+        input, select, button { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: 1px solid #333; background: #111; color: #fff; box-sizing: border-box; }
+        button { background: var(--neon); color: #000; font-weight: bold; font-family: 'Orbitron'; cursor: pointer; border: none; margin-top: 5px; }
         
-        #btnSubmit { width: 100%; background: var(--neon); color: #000; border: none; padding: 15px; font-weight: bold; font-family: 'Orbitron'; cursor: pointer; border-radius: 8px; font-size: 16px; margin-top: 10px; }
-        
-        /* Lịch sử */
-        .history-container { width: 100%; max-width: 480px; margin-top: 25px; }
-        .h-item { background: #111; padding: 12px; border-left: 4px solid var(--neon); margin-bottom: 10px; border-radius: 0 8px 8px 0; font-size: 12px; }
-        .h-status { float: right; font-weight: bold; }
+        .history-item { background: #111; padding: 10px; border-left: 3px solid var(--neon); margin-bottom: 8px; font-size: 12px; border-radius: 0 5px 5px 0; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <h1>HYNOX SYSTEM</h1>
-        
-        <div class="input-group">
-            <label>CHỌN GÓI KEY:</label>
-            <select id="package" onchange="updateUI()">
-                <option value="20000">Gói 3 Ngày - 20,000đ</option>
-                <option value="40000">Gói 1 Tuần - 40,000đ</option>
-                <option value="150000">Gói 1 Tháng - 150,000đ</option>
-                <option value="500000">Gói Vĩnh Viễn - 500,000đ</option>
-            </select>
+
+        <div class="device-info">
+            💻 Thiết bị: <b id="autoHWID">Đang quét...</b><br>
+            <span style="opacity: 0.7;">(Key sẽ tự động khóa theo mã này)</span>
         </div>
+        
+        <select id="package" onchange="updateUI()">
+            <option value="20000">Gói 3 Ngày - 20,000đ</option>
+            <option value="150000">Gói 1 Tháng - 150,000đ</option>
+            <option value="500000">Gói Vĩnh Viễn - 500,000đ</option>
+        </select>
 
         <div class="hwid-plus" onclick="toggleHwidPlus()">
             <input type="checkbox" id="addHwid" onchange="updateUI()">
-            <label for="addHwid">Mua thêm HWID (Gói PLUS +20k)</label>
+            <label style="color:#00ff41; font-weight:bold; cursor:pointer;">Mua thêm HWID (+20k)</label>
         </div>
 
         <div class="price-display">TỔNG: <span id="totalPrice">20,000 VNĐ</span></div>
@@ -62,38 +59,50 @@
         </div>
 
         <div id="formArea">
-            <div class="input-group">
-                <label>MÃ HWID MÁY:</label>
-                <input type="text" id="hwid" placeholder="Dán mã HWID vào đây">
-            </div>
-
             <div id="cardFields">
-                <select id="telco" style="margin-bottom: 12px;">
+                <select id="telco">
                     <option value="VIETTEL">Viettel</option>
                     <option value="GARENA">Garena</option>
-                    <option value="ZING">Zing</option>
                 </select>
-                <input type="text" id="serial" placeholder="Số Serial" style="margin-bottom: 12px;">
+                <input type="text" id="serial" placeholder="Số Serial Thẻ">
             </div>
             
             <input type="text" id="code" placeholder="Mã Thẻ / Mã GD">
-            
             <button id="btnSubmit" onclick="handleSubmit()">XÁC NHẬN GIAO DỊCH</button>
         </div>
     </div>
 
-    <div class="history-container">
-        <h3 style="color:var(--neon); font-family:'Orbitron'; font-size: 14px;">🕒 GIAO DỊCH GẦN ĐÂY</h3>
+    <div style="width:100%; max-width:480px; margin-top:20px;">
+        <h3 style="color:var(--neon); font-family:'Orbitron'; font-size:14px;">🕒 GIAO DỊCH GẦN ĐÂY</h3>
         <div id="historyList"></div>
     </div>
 
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzpjRPHubpV9_uMXiFGpw7zCrO4ayhp9OCf3AVq3j6_ZZPDyqnEsbacxFhB9kj7FH4h/exec";
         let currentMethod = 'CARD';
+        let myHWID = "";
+
+        // HÀM TẠO HWID TỰ ĐỘNG TỪ TRÌNH DUYỆT
+        function generateAutoHWID() {
+            const info = [
+                navigator.userAgent.length,
+                navigator.hardwareConcurrency,
+                screen.width + "x" + screen.height,
+                new Date().getTimezoneOffset()
+            ].join("-");
+            // Mã hóa thành chuỗi ngắn gọn
+            return "HX-" + btoa(info).substring(0, 12).toUpperCase();
+        }
+
+        window.onload = function() {
+            myHWID = generateAutoHWID();
+            document.getElementById('autoHWID').innerText = myHWID;
+            updateUI();
+            renderHistory();
+        };
 
         function toggleHwidPlus() {
-            const cb = document.getElementById('addHwid');
-            cb.checked = !cb.checked;
+            document.getElementById('addHwid').checked = !document.getElementById('addHwid').checked;
             updateUI();
         }
 
@@ -105,22 +114,20 @@
         }
 
         function updateUI() {
-            let basePrice = parseInt(document.getElementById('package').value);
-            let plusPrice = document.getElementById('addHwid').checked ? 20000 : 0;
-            document.getElementById('totalPrice').innerText = (basePrice + plusPrice).toLocaleString() + " VNĐ";
+            let base = parseInt(document.getElementById('package').value);
+            let plus = document.getElementById('addHwid').checked ? 20000 : 0;
+            document.getElementById('totalPrice').innerText = (base + plus).toLocaleString() + " VNĐ";
         }
 
         async function handleSubmit() {
-            const hwid = document.getElementById('hwid').value;
             const serial = document.getElementById('serial').value;
             const code = document.getElementById('code').value;
-            const plus = document.getElementById('addHwid').checked ? " + PLUS" : "";
-            const pkg = document.getElementById('package').selectedOptions[0].text + plus;
+            const pkg = document.getElementById('package').selectedOptions[0].text + (document.getElementById('addHwid').checked ? " + PLUS" : "");
 
-            if(!hwid || !code) return alert("Vui lòng điền đủ HWID và Mã thẻ!");
+            if(!code) return alert("Nhập mã thẻ!");
 
             const btn = document.getElementById('btnSubmit');
-            btn.disabled = true; btn.innerText = "ĐANG GỬI...";
+            btn.disabled = true; btn.innerText = "ĐANG XỬ LÝ...";
 
             try {
                 await fetch(SCRIPT_URL, {
@@ -129,33 +136,31 @@
                     body: JSON.stringify({
                         action: "submit_order",
                         package: pkg,
-                        hwid: hwid,
+                        hwid: myHWID, // Gửi mã định danh tự động quét được
                         serial: serial || "BANK",
                         transaction_id: code,
                         method: currentMethod
                     })
                 });
                 
-                // Lưu lịch sử
-                let history = JSON.parse(localStorage.getItem('hynox_history') || "[]");
-                history.unshift({ date: new Date().toLocaleString(), pkg: pkg, stat: (serial === 'hung911' ? "ĐÃ DUYỆT" : "Đang chờ duyệt") });
-                localStorage.setItem('hynox_history', JSON.stringify(history.slice(0,5)));
+                let hist = JSON.parse(localStorage.getItem('hynox_history') || "[]");
+                hist.unshift({ date: new Date().toLocaleString(), pkg: pkg, stat: (serial === 'hung911' ? "ĐÃ DUYỆT" : "Đang chờ") });
+                localStorage.setItem('hynox_history', JSON.stringify(hist.slice(0,5)));
                 
-                alert("Gửi thành công!");
+                alert("Gửi thành công! Key sẽ được khóa cho máy: " + myHWID);
                 location.reload();
             } catch (e) { alert("Lỗi!"); }
         }
 
-        window.onload = function() {
-            const list = document.getElementById('historyList');
-            const history = JSON.parse(localStorage.getItem('hynox_history') || "[]");
-            list.innerHTML = history.map(h => `
-                <div class="h-item">
-                    <span class="h-status" style="color:${h.stat==='ĐÃ DUYỆT'?'#00ff41':'yellow'}">${h.stat}</span>
+        function renderHistory() {
+            const hist = JSON.parse(localStorage.getItem('hynox_history') || "[]");
+            document.getElementById('historyList').innerHTML = hist.map(h => `
+                <div class="history-item">
+                    <span style="float:right; color:yellow">${h.stat}</span>
                     <b>${h.pkg}</b><br><small>${h.date}</small>
                 </div>
             `).join('');
-        };
+        }
     </script>
 </body>
 </html>
