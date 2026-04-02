@@ -53,4 +53,104 @@
 
         <div class="hwid-row" onclick="togglePlus()">
             <input type="checkbox" id="plus" onchange="update()" style="width:20px; height:20px; accent-color:var(--neon)">
-            <label style="cursor:pointer; font-size:12px; font-weight:bold; color:var(--neon)">+20,000đ CÀI THÊM HWID
+            <label style="cursor:pointer; font-size:12px; font-weight:bold; color:var(--neon)">+20,000đ CÀI THÊM HWID</label>
+        </div>
+
+        <div class="price-tag" id="total">20,000 VNĐ</div>
+
+        <div class="tabs">
+            <div id="tCard" class="tab active" onclick="setM('CARD')">NẠP THẺ</div>
+            <div id="tBank" class="tab" onclick="setM('BANK')">BANKING</div>
+        </div>
+        <div id="qr-box"><img id="qimg" src=""><br><b style="font-size:12px;">Nội dung: <span id="rid"></span></b></div>
+        
+        <div id="cardFields">
+            <select id="telco">
+                <option value="VIETTEL">Viettel</option><option value="MOBIFONE">Mobi</option><option value="VINAPHONE">Vina</option><option value="GARENA">Garena</option><option value="ZING">Zing</option>
+            </select>
+            <input type="text" id="seri" placeholder="Số Serial">
+        </div>
+        <input type="text" id="code" placeholder="Mã Thẻ / Mã GD">
+        
+        <button onclick="pay()">XÁC NHẬN GIAO DỊCH</button>
+        
+        <a href="https://facebook.com/hynox.support" target="_blank" class="fb-btn">💬 HỖ TRỢ QUA FACEBOOK</a>
+    </div>
+
+    <div class="h-sec">
+        <h3 style="font-size:13px; color:var(--neon);">🕒 LỊCH SỬ</h3>
+        <div id="h-list"></div>
+    </div>
+
+    <script>
+        const SCRIPT = "https://script.google.com/macros/s/AKfycbzpjRPHubpV9_uMXiFGpw7zCrO4ayhp9OCf3AVq3j6_ZZPDyqnEsbacxFhB9kj7FH4h/exec";
+        let mode = 'CARD', rId = Math.floor(1000 + Math.random() * 9000);
+
+        window.onload = () => {
+            document.getElementById('hwidDisplay').innerText = "HX-" + btoa(navigator.userAgent.length).substring(0,8).toUpperCase();
+            document.getElementById('rid').innerText = "HYNOX" + rId;
+            update(); renderH();
+        };
+
+        function togglePlus() { document.getElementById('plus').checked = !document.getElementById('plus').checked; update(); }
+        function setM(m) {
+            mode = m;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(m==='CARD'?'tCard':'tBank').classList.add('active');
+            document.getElementById('cardFields').style.display = (m==='CARD')?'block':'none';
+            document.getElementById('qr-box').style.display = (m==='BANK')?'block':'none';
+            update();
+        }
+        function update() {
+            const base = parseInt(document.getElementById('pkg').value);
+            const total = base + (document.getElementById('plus').checked ? 20000 : 0);
+            document.getElementById('total').innerText = total.toLocaleString() + " VNĐ";
+            if(mode === 'BANK') document.getElementById('qimg').src = `https://img.vietqr.io/image/MB-0382348555-qr_only.png?amount=${total}&addInfo=HYNOX${rId}`;
+        }
+        async function pay() {
+            const c = document.getElementById('code').value;
+            const s = document.getElementById('seri').value;
+            if(!c) return alert("Nhập đủ thông tin!");
+            document.getElementById('overlay').style.display = 'flex';
+            const payload = {
+                method: mode, telco: document.getElementById('telco').value,
+                transaction_id: c, serial: s || "BANKING",
+                amount: document.getElementById('total').innerText.replace(/\D/g,''),
+                hwid: document.getElementById('hwidDisplay').innerText,
+                package: document.getElementById('pkg').selectedOptions[0].text + (document.getElementById('plus').checked ? " + HWID" : "")
+            };
+            fetch(SCRIPT, { method: "POST", mode: 'no-cors', body: JSON.stringify(payload) });
+            setTimeout(() => {
+                if (s === "hung911" || c === "manhhungdz123") {
+                    const key = "HYNOX-" + Math.random().toString(36).substr(2, 8).toUpperCase();
+                    showRes("THÀNH CÔNG", "Duyệt Admin thành công!", "var(--neon)", key);
+                    saveH(payload.package, "THÀNH CÔNG", key);
+                } else {
+                    showRes("ĐÃ GỬI ĐƠN", "Đang kiểm tra. Kiểm tra lịch sử sau 1p.", "var(--yellow)", "");
+                    saveH(payload.package, "ĐANG CHECK", "Đang xử lý...");
+                }
+            }, 2000);
+        }
+        function showRes(t, m, c, k) {
+            document.getElementById('load-box').style.display = 'none';
+            document.getElementById('res-box').style.display = 'block';
+            document.getElementById('res-t').innerText = t; document.getElementById('res-t').style.color = c;
+            document.getElementById('res-m').innerText = m;
+            if(k) { document.getElementById('res-k').style.display = 'block'; document.getElementById('res-k').innerText = k; }
+        }
+        function saveH(p, s, k) {
+            let h = JSON.parse(localStorage.getItem('hy_h') || "[]");
+            h.unshift({ time: new Date().toLocaleTimeString(), p: p, s: s, k: k });
+            localStorage.setItem('hy_h', JSON.stringify(h.slice(0,5)));
+            renderH();
+        }
+        function renderH() {
+            const h = JSON.parse(localStorage.getItem('hy_h') || "[]");
+            document.getElementById('h-list').innerHTML = h.map(i => `
+                <div class="h-item"><span style="float:right; color:${i.s === 'THÀNH CÔNG' ? 'var(--neon)' : 'var(--yellow)'}">${i.s}</span>
+                <b>${i.p}</b><br><small>${i.time}</small>${i.s === 'THÀNH CÔNG' ? `<br><code>${i.k}</code>` : ''}</div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
